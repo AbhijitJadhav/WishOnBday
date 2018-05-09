@@ -31,9 +31,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jersey')
 	compile('com.microsoft.sqlserver:mssql-jdbc')
 	compile('commons-validator:commons-validator:1.6')
-    compile ('javax.mail:mail:version:1.4.7')
+    compile('javax.mail:mail')
 	
 	
-	testCompile('com.h2database:h2')
-	testCompile('org.springframework.boot:spring-boot-starter-test') 
+	//testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
