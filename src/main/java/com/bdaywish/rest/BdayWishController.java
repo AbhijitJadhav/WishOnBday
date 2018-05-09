@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bdaywish.bo.BaseResponse;
 import com.bdaywish.bo.CommonRs;
+import com.bdaywish.bo.ListRs;
 import com.bdaywish.bo.UserBO;
 import com.bdaywish.pojo.User;
 import com.bdaywish.services.BdayWishService;
+import com.bdaywish.utils.WishOnBdayException;
 
 /**
  * 
@@ -52,9 +54,29 @@ public class BdayWishController {
 			commonRs.setStatus("success");
 		}catch(Exception e) {
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			commonRs.setMessage( e.getMessage());
+			commonRs.setMessage(e.getMessage());
 			commonRs.setStatus("user not found for id :"+id );
 		}
 		return new ResponseEntity<CommonRs<UserBO>>(commonRs,httpStatus);
+	}
+	
+	@RequestMapping(value="/getUserByTime",method=RequestMethod.GET)
+	public ResponseEntity<ListRs<UserBO>> getUserByTime(){
+		ListRs<UserBO> listRs = new ListRs<>();
+		HttpStatus httpStatus = null;
+		try {
+			listRs.setData(bdayWishService.getUsersByTime());
+			httpStatus = HttpStatus.OK;
+			listRs.setMessage("users foud for time");
+			listRs.setStatus("success");
+		}catch(WishOnBdayException e) {
+			httpStatus = HttpStatus.OK;
+			listRs.setMessage("No one is having bday today");
+			listRs.setStatus("success");
+		}catch(Exception e) {
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			listRs.setMessage(e.getMessage());
+		}
+		return new ResponseEntity<ListRs<UserBO>>(listRs,httpStatus);
 	}
 }
