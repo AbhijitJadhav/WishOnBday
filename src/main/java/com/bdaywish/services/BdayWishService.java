@@ -10,8 +10,10 @@ public interface BdayWishService {
 
 	List<UserBO> getUsersByTime() throws WishOnBdayException;
 
-	void addUser(User user);
+	void addUser(UserBO userbo);
 
 	UserBO findUserById(Integer id);
+
+	void sendMail(List<Integer> idsList);
 
 }

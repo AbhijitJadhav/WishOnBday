@@ -3,6 +3,7 @@ package com.bdaywish.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aspectj.util.UtilClassLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,19 @@ public class BdayWishServiceImpl implements BdayWishService{
 
 	@Autowired
 	private BdayWishRepository bdayWishRepository;
-	
+
 	private Utility utility = new Utility();
-	
+
 	@Override
-	public void addUser(User user) {
-		if(user.toString().trim().length() > 0)
-			bdayWishRepository.save(user);
+	public void addUser(UserBO userbo) {
+		User user = new User();
+		if(userbo.toString().trim().length() > 0)
+			user.setFirstName(userbo.getFirstName());
+		user.setLastName(userbo.getLastName());
+		user.setEmail(userbo.getEmail());
+		user.setPhone(userbo.getPhone());
+		user.setDateOfBirth(userbo.getDateOfBirth());
+		bdayWishRepository.save(user);
 	}
 
 	@Override
@@ -39,7 +46,7 @@ public class BdayWishServiceImpl implements BdayWishService{
 		userBO.setPhone(user.getPhone());
 		userBO.setDateOfBirth(user.getDateOfBirth());
 		return userBO;
-  }
+	}
 
 	@Override
 	public List<UserBO> getUsersByTime() throws WishOnBdayException {
@@ -49,20 +56,27 @@ public class BdayWishServiceImpl implements BdayWishService{
 		UserBO userBO = new UserBO();
 		userList = bdayWishRepository.findUsersByTime(time);
 		if(userList.size()>0) {
-		userList.forEach((user)->{
-			userBO.setId(user.getId());
-			userBO.setFirstName(user.getFirstName());
-			userBO.setLastName(user.getLastName());
-			userBO.setEmail(user.getEmail());
-			userBO.setPhone(user.getPhone());
-			userBO.setDateOfBirth(user.getDateOfBirth());
-			userBOList.add(userBO);
-		});
+			userList.forEach((user)->{
+				userBO.setId(user.getId());
+				userBO.setFirstName(user.getFirstName());
+				userBO.setLastName(user.getLastName());
+				userBO.setEmail(user.getEmail());
+				userBO.setPhone(user.getPhone());
+				userBO.setDateOfBirth(user.getDateOfBirth());
+				userBOList.add(userBO);
+			});
 		} else {
 			throw new WishOnBdayException("No one having bday today");
 		}
-		 
 		return userBOList;
 	}
+
+	public void sendMail(List<Integer> idsList) {
+		idsList.forEach((id)->{
+			UserBO userbo = findUserById(id);
+			utility.sendMail(userbo.getEmail());
+		});
+	}
+
 
 }

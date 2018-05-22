@@ -1,5 +1,9 @@
 package com.bdaywish.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +32,7 @@ public class BdayWishController {
 	private BdayWishService bdayWishService;
 	
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
-	public ResponseEntity<BaseResponse> addUser(@RequestBody User user) {
+	public ResponseEntity<BaseResponse> addUser(@RequestBody UserBO user) {
 		BaseResponse baseResponse = new BaseResponse();
 		HttpStatus httpstatus = null;
 		try {
@@ -78,5 +82,17 @@ public class BdayWishController {
 			listRs.setMessage(e.getMessage());
 		}
 		return new ResponseEntity<ListRs<UserBO>>(listRs,httpStatus);
+	}
+	
+	@RequestMapping(value="/sendMail",method=RequestMethod.GET)
+	public ResponseEntity<BaseResponse> sendMail(){
+		BaseResponse baseResponse = new BaseResponse();
+		HttpStatus httpStatus = null;
+		List<Integer> idsList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
+		try{
+			bdayWishService.sendMail(idsList);
+		}catch(Exception e){
+		}
+		return new ResponseEntity<>(baseResponse,httpStatus);
 	}
 }
