@@ -16,4 +16,7 @@ public interface BdayWishService {
 
 	void sendMail(List<Integer> idsList);
 
+	List<UserBO> getUsers();
+
+
 }

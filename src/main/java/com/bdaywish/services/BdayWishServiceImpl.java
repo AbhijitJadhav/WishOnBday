@@ -2,11 +2,8 @@ package com.bdaywish.services;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.aspectj.util.UtilClassLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.bdaywish.bo.UserBO;
 import com.bdaywish.pojo.User;
 import com.bdaywish.repo.BdayWishRepository;
@@ -76,6 +73,23 @@ public class BdayWishServiceImpl implements BdayWishService{
 			UserBO userbo = findUserById(id);
 			utility.sendMail(userbo.getEmail());
 		});
+	}
+
+	public List<UserBO> getUsers() {
+		List<User> userList = new ArrayList<>();
+		List<UserBO> userBOList = new ArrayList<>();
+		userList = bdayWishRepository.findAllUsers();
+		userList.forEach((user)->{
+			UserBO userBO = new UserBO();
+			userBO.setId(user.getId());
+			userBO.setFirstName(user.getFirstName());
+			userBO.setLastName(user.getLastName());
+			userBO.setEmail(user.getEmail());
+			userBO.setPhone(user.getPhone());
+			userBO.setDateOfBirth(user.getDateOfBirth());
+			userBOList.add(userBO);
+		});
+		return userBOList;
 	}
 
 

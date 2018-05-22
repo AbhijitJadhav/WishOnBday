@@ -12,4 +12,7 @@ public interface BdayWishRepository extends JpaRepository<User, Integer>{
 	@Query(value="select * from users where date_of_birth=?1",nativeQuery=true)
 	List<User> findUsersByTime(Long time);
 
+	@Query(value="select * from users",nativeQuery=true)
+	List<User> findAllUsers();
+
 }

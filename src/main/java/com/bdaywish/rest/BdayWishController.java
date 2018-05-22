@@ -3,7 +3,6 @@ package com.bdaywish.rest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import com.bdaywish.bo.BaseResponse;
 import com.bdaywish.bo.CommonRs;
 import com.bdaywish.bo.ListRs;
 import com.bdaywish.bo.UserBO;
-import com.bdaywish.pojo.User;
 import com.bdaywish.services.BdayWishService;
 import com.bdaywish.utils.WishOnBdayException;
 
@@ -30,6 +28,23 @@ public class BdayWishController {
 	
 	@Autowired
 	private BdayWishService bdayWishService;
+	
+	@RequestMapping(value="/getUsers",method=RequestMethod.GET)
+	public ResponseEntity<ListRs<UserBO>> getUsers(){
+		ListRs<UserBO> listRs = new ListRs<>();
+		HttpStatus httpStatus = null;
+		try {
+			listRs.setData(bdayWishService.getUsers());
+			httpStatus = HttpStatus.OK;
+			listRs.setMessage("users foud	");
+			listRs.setStatus("success");
+			listRs.setCount(listRs.getData().size());
+		}catch(Exception e) {
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			listRs.setMessage(e.getMessage());
+		}
+		return new ResponseEntity<ListRs<UserBO>>(listRs,httpStatus);
+	}
 	
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public ResponseEntity<BaseResponse> addUser(@RequestBody UserBO user) {
