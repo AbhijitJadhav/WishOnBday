@@ -71,7 +71,7 @@ public class BdayWishServiceImpl implements BdayWishService{
 	public void sendMail(List<Integer> idsList) {
 		idsList.forEach((id)->{
 			UserBO userbo = findUserById(id);
-			utility.sendMail(userbo.getEmail());
+			utility.sendMail(userbo.getFirstName(),userbo.getEmail(), "");
 		});
 	}
 

@@ -106,7 +106,9 @@ public class BdayWishController {
 		List<Integer> idsList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
 		try{
 			bdayWishService.sendMail(idsList);
+			httpStatus = HttpStatus.OK;
 		}catch(Exception e){
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<>(baseResponse,httpStatus);
 	}

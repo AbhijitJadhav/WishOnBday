@@ -1,12 +1,20 @@
 package com.bdaywish.utils;
 
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 import javax.mail.*;
 import javax.mail.internet.*;
 public class Utility {
 
-	public String sendMail(String name,String toMail) {
+	public String sendMail(String name,String toMail, String imageUrl) {
+		imageUrl = "https://www.birthdaywishes.expert/wp-content/uploads/2015/06/Happy-birthday-wish-cup-cake-candles-balloons.jpg";
 		final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 		Properties props = System.getProperties();
 		props.setProperty("mail.smtp.host", "smtp.gmail.com");
@@ -28,14 +36,31 @@ public class Utility {
 						return new PasswordAuthentication(username, password);
 					}
 				});
-	
 				Message msg = new MimeMessage(session);
+				
+				 try {
+					 BufferedImage image = ImageIO.read(new URL(imageUrl));
+					 Graphics g = image.getGraphics();
+					 g.setFont(g.getFont().deriveFont(30f));
+					    g.drawString("Hello World!", 100, 100);
+					    g.dispose();
+
+					   
+					 ImageIO.write(image, "jpg", new File(
+					          "C:/Users/Public/Pictures/image.jpg"));
+					 
+					 } catch (IOException e) {
+					 // TODO Auto-generated catch block
+					 e.printStackTrace();
+					 }
+					     
+
 	
-				msg.setFrom(new InternetAddress("akproakpro2017@gmail.com"));
+				msg.setFrom(new InternetAddress(username));
 				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toMail, false));
 	
-				msg.setSubject("Akpro Account Details");
-				msg.setText("Hello " + name + "\n\n" + "" + "Your Account Details\n" + "" + "Email Address : " + toMail );
+				msg.setSubject("Happy BirthDay!!!");
+				msg.setContent("<H4>Hello " + name + " </H4><BR/>" + "" + "<IMG SRC='C:/Users/Public/Pictures/image.jpg'/>", "text/html" );
 	
 				msg.setSentDate(new Date());
 				Transport.send(msg);
@@ -59,6 +84,7 @@ public class Utility {
 		} catch (AddressException e) {
 			System.out.println("You are in catch block -- Exception Occurred for: " + email);
 		}
+		return isValid;
 		
 	   }
 	
