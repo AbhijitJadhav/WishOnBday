@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import com.bdaywish.utils.WishOnBdayException;
  * @author Abhijit.Jadhav
  *
  */
+@CrossOrigin(origins = {"*"}, maxAge = 4800, allowCredentials = "false")
 @RestController
 public class BdayWishController {
 	
@@ -106,6 +108,20 @@ public class BdayWishController {
 		List<Integer> idsList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
 		try{
 			bdayWishService.sendMail(idsList);
+			httpStatus = HttpStatus.OK;
+		}catch(Exception e){
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<>(baseResponse,httpStatus);
+	}
+	
+	@RequestMapping(value="/sendSMS",method=RequestMethod.GET)
+	public ResponseEntity<BaseResponse> sendSMS(){
+		BaseResponse baseResponse = new BaseResponse();
+		HttpStatus httpStatus = null;
+		List<Integer> idsList = new ArrayList<Integer>(Arrays.asList(1,2,7,8,9));
+		try{
+			bdayWishService.sendSMS(idsList);
 			httpStatus = HttpStatus.OK;
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
