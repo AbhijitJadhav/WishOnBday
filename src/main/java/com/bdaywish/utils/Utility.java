@@ -7,10 +7,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-
 import javax.imageio.ImageIO;
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.Message;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+
 public class Utility {
 
 	public String sendMail(String name,String toMail, String imageUrl) {
@@ -26,7 +30,7 @@ public class Utility {
 		props.put("mail.debug", "true");
 		props.put("mail.store.protocol", "pop3");
 		props.put("mail.transport.protocol", "smtp");
-		
+
 		final String username = "abhijitjadhav67@gmail.com";//
 		final String password = "9527995127";
 		try {
@@ -37,31 +41,22 @@ public class Utility {
 					}
 				});
 				Message msg = new MimeMessage(session);
-				
-				 try {
-					 BufferedImage image = ImageIO.read(new URL(imageUrl));
-					 Graphics g = image.getGraphics();
-					 g.setFont(g.getFont().deriveFont(30f));
-					    g.drawString("Hello World!", 100, 100);
-					    g.dispose();
+				try {
+					BufferedImage image = ImageIO.read(new URL(imageUrl));
+					Graphics g = image.getGraphics();
+					g.setFont(g.getFont().deriveFont(30f));
+					g.drawString("Hello World!", 100, 100);
+					g.dispose();
+					ImageIO.write(image, "jpg", new File(
+							"C:/Users/Public/Pictures/image.jpg"));
 
-					   
-					 ImageIO.write(image, "jpg", new File(
-					          "C:/Users/Public/Pictures/image.jpg"));
-					 
-					 } catch (IOException e) {
-					 // TODO Auto-generated catch block
-					 e.printStackTrace();
-					 }
-					     
-
-	
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				msg.setFrom(new InternetAddress(username));
 				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toMail, false));
-	
 				msg.setSubject("Happy BirthDay!!!");
 				msg.setContent("<H4>Hello " + name + " </H4><BR/>" + "" + "<IMG SRC='C:/Users/Public/Pictures/image.jpg'/>", "text/html" );
-	
 				msg.setSentDate(new Date());
 				Transport.send(msg);
 				System.out.println("Message sent.");
@@ -73,26 +68,27 @@ public class Utility {
 			return "Cant send mail";
 		}
 	}
-	
+
 	private boolean crunchifyEmailValidator(String email) {
 		boolean isValid = false;
 		try {
 			InternetAddress internetAddress = new InternetAddress(email);
 			internetAddress.validate();
 			isValid = true;
-			
+
 		} catch (AddressException e) {
 			System.out.println("You are in catch block -- Exception Occurred for: " + email);
 		}
 		return isValid;
-		
-	   }
-	
 
-	public Long getCurrentDate() { 
-	//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	//	System.out.println(sdf.format(Calendar.getInstance().getTimeInMillis()));
-		return Calendar.getInstance().getTimeInMillis()/1000;
 	}
 
+
+	public Long getCurrentDate() { 
+		//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		//	System.out.println(sdf.format(Calendar.getInstance().getTimeInMillis()));
+		return Calendar.getInstance().getTimeInMillis()/1000;
+	}
+	
+	
 }
