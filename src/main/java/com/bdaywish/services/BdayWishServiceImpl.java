@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.bdaywish.bo.UserBO;
 import com.bdaywish.pojo.User;
 import com.bdaywish.repo.BdayWishRepository;
+import com.bdaywish.utils.SendSMS;
 import com.bdaywish.utils.Utility;
 import com.bdaywish.utils.WishOnBdayException;
 
@@ -90,6 +91,15 @@ public class BdayWishServiceImpl implements BdayWishService{
 			userBOList.add(userBO);
 		});
 		return userBOList;
+	}
+
+	@Override
+	public void sendSMS(List<Integer> idsList) {
+		SendSMS sendSMS = new SendSMS();
+		idsList.forEach((id)->{
+			UserBO userbo = findUserById(id);
+			sendSMS.sendSMS(userbo.getPhone()," Happy Birthday! Enjoy your day :)");
+		});
 	}
 
 

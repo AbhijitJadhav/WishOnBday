@@ -18,5 +18,7 @@ public interface BdayWishService {
 
 	List<UserBO> getUsers();
 
+	void sendSMS(List<Integer> idsList);
+
 
 }

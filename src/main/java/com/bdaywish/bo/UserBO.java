@@ -28,6 +28,14 @@ public class UserBO implements Serializable {
 	
 	private String phone;
 	
+	@JsonProperty("emp_id")
+	private Integer empId;
+	
+	@JsonProperty("image_path")
+	private String imagePath;
+	
+	private String address;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -63,6 +71,24 @@ public class UserBO implements Serializable {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+	public Integer getEmpId() {
+		return empId;
+	}
+	public void setEmpId(Integer empId) {
+		this.empId = empId;
+	}
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	
