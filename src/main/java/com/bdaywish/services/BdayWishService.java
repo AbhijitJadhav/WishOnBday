@@ -14,7 +14,7 @@ public interface BdayWishService {
 
 	UserBO findUserById(Integer id);
 
-	void sendMail(List<Integer> idsList);
+	void sendMail(Integer id, String mailSubject, String message);
 
 	List<UserBO> getUsers();
 

@@ -3,14 +3,10 @@ package com.bdaywish.pojo;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.executable.ValidateOnExecution;
 
 /**
  * 
@@ -27,6 +23,9 @@ public class User implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(name="emp_id")
+	private Integer empId;
+	
 	@Column(name="first_name")
 	private String firstName;
 	
@@ -42,9 +41,11 @@ public class User implements Serializable {
 	@Column(name="phone")
 	private String phone;
 	
-	@OneToOne
-	@JoinColumn(name="emp_id", foreignKey=@ForeignKey(name="emp_id_fk"))
-	private UserMeta userMeta;
+	@Column(name="profile_pic")
+	private String profilePic;
+	
+	@Column(name="address")
+	private String address;
 	
 	public Integer getId() {
 		return id;
@@ -82,7 +83,23 @@ public class User implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	
+	public Integer getEmpId() {
+		return empId;
+	}
+	public void setEmpId(Integer empId) {
+		this.empId = empId;
+	}
+	public String getProfilePic() {
+		return profilePic;
+	}
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}	
 
 }

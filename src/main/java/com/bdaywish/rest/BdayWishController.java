@@ -38,7 +38,7 @@ public class BdayWishController {
 		try {
 			listRs.setData(bdayWishService.getUsers());
 			httpStatus = HttpStatus.OK;
-			listRs.setMessage("users foud	");
+			listRs.setMessage("users foud ");
 			listRs.setStatus("success");
 			listRs.setCount(listRs.getData().size());
 		}catch(Exception e) {
@@ -102,12 +102,13 @@ public class BdayWishController {
 	}
 	
 	@RequestMapping(value="/sendMail",method=RequestMethod.GET)
-	public ResponseEntity<BaseResponse> sendMail(){
+	public ResponseEntity<BaseResponse> sendMail(@RequestBody Integer empid,
+												 @RequestBody String mailSubject,
+												 @RequestBody String message){
 		BaseResponse baseResponse = new BaseResponse();
 		HttpStatus httpStatus = null;
-		List<Integer> idsList = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
 		try{
-			bdayWishService.sendMail(idsList);
+			bdayWishService.sendMail(empid,mailSubject,message);
 			httpStatus = HttpStatus.OK;
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;

@@ -22,12 +22,15 @@ public class BdayWishServiceImpl implements BdayWishService{
 	@Override
 	public void addUser(UserBO userbo) {
 		User user = new User();
+		user.setEmpId(userbo.getEmpId());
 		if(userbo.toString().trim().length() > 0)
 			user.setFirstName(userbo.getFirstName());
 		user.setLastName(userbo.getLastName());
 		user.setEmail(userbo.getEmail());
 		user.setPhone(userbo.getPhone());
 		user.setDateOfBirth(userbo.getDateOfBirth());
+		user.setProfilePic(utility.saveProfilePicToLocal(userbo.getEmpId(),userbo.getProfilePic()));
+		user.setAddress(userbo.getAddress());
 		bdayWishRepository.save(user);
 	}
 
@@ -69,11 +72,9 @@ public class BdayWishServiceImpl implements BdayWishService{
 		return userBOList;
 	}
 
-	public void sendMail(List<Integer> idsList) {
-		idsList.forEach((id)->{
+	public void sendMail(Integer id,String mailSubject, String message) {
 			UserBO userbo = findUserById(id);
-			utility.sendMail(userbo.getFirstName(),userbo.getEmail(), "");
-		});
+			utility.sendMail(userbo.getFirstName(),userbo.getEmail(), mailSubject,message);
 	}
 
 	public List<UserBO> getUsers() {
@@ -83,11 +84,14 @@ public class BdayWishServiceImpl implements BdayWishService{
 		userList.forEach((user)->{
 			UserBO userBO = new UserBO();
 			userBO.setId(user.getId());
+			userBO.setEmpId(user.getEmpId());
 			userBO.setFirstName(user.getFirstName());
 			userBO.setLastName(user.getLastName());
 			userBO.setEmail(user.getEmail());
 			userBO.setPhone(user.getPhone());
 			userBO.setDateOfBirth(user.getDateOfBirth());
+			userBO.setProfilePic(user.getProfilePic());
+			userBO.setAddress(user.getAddress());;
 			userBOList.add(userBO);
 		});
 		return userBOList;

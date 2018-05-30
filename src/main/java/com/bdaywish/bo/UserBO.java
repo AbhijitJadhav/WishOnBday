@@ -15,6 +15,9 @@ public class UserBO implements Serializable {
 	
 	private Integer id;
 	
+	@JsonProperty("emp_id")
+	private Integer empId;
+	
 	@JsonProperty("first_name")
 	private String firstName;
 	
@@ -28,11 +31,8 @@ public class UserBO implements Serializable {
 	
 	private String phone;
 	
-	@JsonProperty("emp_id")
-	private Integer empId;
-	
-	@JsonProperty("image_path")
-	private String imagePath;
+	@JsonProperty("profile_pic_path")
+	private String profilePic;
 	
 	private String address;
 	
@@ -78,11 +78,12 @@ public class UserBO implements Serializable {
 	public void setEmpId(Integer empId) {
 		this.empId = empId;
 	}
-	public String getImagePath() {
-		return imagePath;
+	
+	public String getProfilePic() {
+		return profilePic;
 	}
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
 	}
 	public String getAddress() {
 		return address;
@@ -91,6 +92,4 @@ public class UserBO implements Serializable {
 		this.address = address;
 	}
 	
-	
-
 }
