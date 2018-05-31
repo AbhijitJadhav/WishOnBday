@@ -1,30 +1,19 @@
 package com.bdaywish.utils;
 
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import javax.imageio.ImageIO;
 import javax.mail.*;
 import javax.mail.Message;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import org.apache.commons.io.FileUtils;
 
 
 public class Utility {
@@ -44,7 +33,7 @@ public class Utility {
 		props.put("mail.transport.protocol", "smtp");
 
 		final String username = "abhijitjadhav67@gmail.com";//
-		final String password = "9527995127";
+		final String password = "India@11";
 		try {
 			if(crunchifyEmailValidator(toMail)) {
 				Session session = Session.getDefaultInstance(props, new Authenticator() {
@@ -68,7 +57,7 @@ public class Utility {
 				msg.setFrom(new InternetAddress(username));
 				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toMail, false));
 				msg.setSubject(subject);
-				msg.setContent("<H4> hi" + name + " </H4><H2>"+message+"</H2><BR/>" + "" + "<IMG SRC='https://www.birthdaywishes.expert/wp-content/uploads/2015/06/Happy-birthday-wish-cup-cake-candles-balloons.jpg'/>", "text/html" );
+				msg.setContent("<H4> Hi! " + name + " </H4><H2>"+message+"</H2><BR/>" + "" + "<IMG SRC='https://www.birthdaywishes.expert/wp-content/uploads/2015/06/Happy-birthday-wish-cup-cake-candles-balloons.jpg'/>", "text/html" );
 				msg.setSentDate(new Date());
 				Transport.send(msg);
 				System.out.println("Message sent.");
@@ -97,9 +86,13 @@ public class Utility {
 
 
 	public Long getCurrentDate() { 
-		//SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		//	System.out.println(sdf.format(Calendar.getInstance().getTimeInMillis()));
-		return Calendar.getInstance().getTimeInMillis()/1000;
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+		String dateString = sdf.format(Calendar.getInstance().getTimeInMillis());
+		//System.out.println(dateString);
+		Date date = new Date (dateString);
+		//System.out.println(date);
+	//	System.out.println(date.getTime());
+		return date.getTime()/1000;
 	}
 
 	public String saveProfilePicToLocal(Integer empid,String Fromlocation) {

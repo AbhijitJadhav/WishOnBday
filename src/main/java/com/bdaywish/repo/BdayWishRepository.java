@@ -14,5 +14,8 @@ public interface BdayWishRepository extends JpaRepository<User, Integer>{
 
 	@Query(value="select * from users",nativeQuery=true)
 	List<User> findAllUsers();
+	
+	@Query(value="select * from users where emp_id=?",nativeQuery=true)
+	User findUserByEmpId(Integer id);
 
 }

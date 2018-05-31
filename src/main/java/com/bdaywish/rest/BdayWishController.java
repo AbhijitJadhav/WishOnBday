@@ -3,15 +3,21 @@ package com.bdaywish.rest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.bdaywish.bean.RBMailBean;
 import com.bdaywish.bo.BaseResponse;
 import com.bdaywish.bo.CommonRs;
 import com.bdaywish.bo.ListRs;
@@ -27,10 +33,10 @@ import com.bdaywish.utils.WishOnBdayException;
 @CrossOrigin(origins = {"*"}, maxAge = 4800, allowCredentials = "false")
 @RestController
 public class BdayWishController {
-	
+
 	@Autowired
 	private BdayWishService bdayWishService;
-	
+
 	@RequestMapping(value="/getUsers",method=RequestMethod.GET)
 	public ResponseEntity<ListRs<UserBO>> getUsers(){
 		ListRs<UserBO> listRs = new ListRs<>();
@@ -47,7 +53,7 @@ public class BdayWishController {
 		}
 		return new ResponseEntity<ListRs<UserBO>>(listRs,httpStatus);
 	}
-	
+
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public ResponseEntity<BaseResponse> addUser(@RequestBody UserBO user) {
 		BaseResponse baseResponse = new BaseResponse();
@@ -63,7 +69,7 @@ public class BdayWishController {
 		}
 		return new ResponseEntity<BaseResponse>(baseResponse,httpstatus);
 	}
-	
+
 	@RequestMapping(value="/findUserById",method=RequestMethod.GET)
 	public ResponseEntity<CommonRs<UserBO>> getUserById(@RequestParam(name="id",required=true,defaultValue="0") Integer id){
 		CommonRs<UserBO> commonRs = new CommonRs<>();
@@ -80,7 +86,7 @@ public class BdayWishController {
 		}
 		return new ResponseEntity<CommonRs<UserBO>>(commonRs,httpStatus);
 	}
-	
+
 	@RequestMapping(value="/getUserByTime",method=RequestMethod.GET)
 	public ResponseEntity<ListRs<UserBO>> getUserByTime(){
 		ListRs<UserBO> listRs = new ListRs<>();
@@ -100,22 +106,24 @@ public class BdayWishController {
 		}
 		return new ResponseEntity<ListRs<UserBO>>(listRs,httpStatus);
 	}
-	
-	@RequestMapping(value="/sendMail",method=RequestMethod.GET)
-	public ResponseEntity<BaseResponse> sendMail(@RequestBody Integer empid,
-												 @RequestBody String mailSubject,
-												 @RequestBody String message){
+
+	@RequestMapping(value="/sendMail",method=RequestMethod.POST)
+	public ResponseEntity<BaseResponse> sendMail(@RequestBody RBMailBean mailBean){
 		BaseResponse baseResponse = new BaseResponse();
 		HttpStatus httpStatus = null;
 		try{
-			bdayWishService.sendMail(empid,mailSubject,message);
+			bdayWishService.sendMail(mailBean.getEmpId(),mailBean.getSubject(),mailBean.getMessage());
 			httpStatus = HttpStatus.OK;
+			baseResponse.setMessage("mail sent sucessfully");
+			baseResponse.setStatus("success");
 		}catch(Exception e){
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			baseResponse.setMessage(e.getMessage());
 		}
 		return new ResponseEntity<>(baseResponse,httpStatus);
+		
 	}
-	
+
 	@RequestMapping(value="/sendSMS",method=RequestMethod.GET)
 	public ResponseEntity<BaseResponse> sendSMS(){
 		BaseResponse baseResponse = new BaseResponse();
