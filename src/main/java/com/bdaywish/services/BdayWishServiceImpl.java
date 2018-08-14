@@ -57,10 +57,11 @@ public class BdayWishServiceImpl implements BdayWishService{
 		Long time = utility.getCurrentDate();
 		List<User> userList = new ArrayList<>();
 		List<UserBO> userBOList = new ArrayList<>();
-		UserBO userBO = new UserBO();
 		userList = bdayWishRepository.findUsersByTime(time);
+		
 		if(userList.size()>0) {
-			userList.forEach((user)->{
+			for (User user : userList) {
+				UserBO userBO = new UserBO();
 				userBO.setId(user.getId());
 				userBO.setEmpId(user.getEmpId());
 				userBO.setFirstName(user.getFirstName());
@@ -70,7 +71,19 @@ public class BdayWishServiceImpl implements BdayWishService{
 				userBO.setDateOfBirth(user.getDateOfBirth());
 				userBO.setProfilePic(user.getProfilePic());
 				userBO.setAddress(user.getAddress());
-			});
+				userBOList.add(userBO);
+			}
+			/*userList.forEach((user)->{
+				userBO.setId(user.getId());
+				userBO.setEmpId(user.getEmpId());
+				userBO.setFirstName(user.getFirstName());
+				userBO.setLastName(user.getLastName());
+				userBO.setEmail(user.getEmail());
+				userBO.setPhone(user.getPhone());
+				userBO.setDateOfBirth(user.getDateOfBirth());
+				userBO.setProfilePic(user.getProfilePic());
+				userBO.setAddress(user.getAddress());
+			});*/
 		} else {
 			throw new WishOnBdayException("No one having bday today");
 		}

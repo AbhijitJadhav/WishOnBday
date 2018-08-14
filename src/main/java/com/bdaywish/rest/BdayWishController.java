@@ -96,6 +96,7 @@ public class BdayWishController {
 			httpStatus = HttpStatus.OK;
 			listRs.setMessage("users foud for time");
 			listRs.setStatus("success");
+			listRs.setCount(listRs.getData().size());
 		}catch(WishOnBdayException e) {
 			httpStatus = HttpStatus.OK;
 			listRs.setMessage("No one is having bday today");
