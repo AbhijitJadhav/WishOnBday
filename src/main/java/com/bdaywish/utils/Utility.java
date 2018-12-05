@@ -11,10 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -61,29 +59,18 @@ public class Utility {
 				msg.setSubject(subject);
 				String finalMessage = "Hi "+name +"!!! \n" +message;
 				writeMessageOnImage(finalMessage);
-				//+ "" + "<IMG SRC='"+imageFile.toURI().toURL()+"'/>"
-				//msg.setContent("<H4> Hi! " + name + " </H4><H2>"+message+"</H2><BR/>" , "text/html" );
 				MimeMultipart multipart = new MimeMultipart("related");
-				//msg.setDataHandler(new DataHandler(new FileDataSource(imagePath)));
 				msg.setSentDate(new Date());
 				BodyPart messageBodyPart = new MimeBodyPart();
 				String htmlText = "Hi "+name +" !!! <img src=\"cid:image\">";
 				messageBodyPart.setContent(htmlText, "text/html");
-				// add it
 				multipart.addBodyPart(messageBodyPart);
-
-				// second part (the image)
 				messageBodyPart = new MimeBodyPart();
 				DataSource fds = new FileDataSource(
 						imagePath);
-
 				messageBodyPart.setDataHandler(new DataHandler(fds));
 				messageBodyPart.setHeader("Content-ID", "<image>");
-
-				// add image to the multipart
 				multipart.addBodyPart(messageBodyPart);
-
-				// put everything together
 				msg.setContent(multipart);
 				Transport.send(msg);
 				System.out.println("Message sent.");
@@ -107,7 +94,7 @@ public class Utility {
 			graphics.setFont(new Font("Arial Black", Font.BOLD, 20));
 			graphics.drawString(sal, 70, 35);
 			graphics.drawString(msg, 80, 55);
-			
+
 			ImageIO.write(bufferedImage, "jpg", new File(
 					"./src/main/resources/hbdayWithMessage.jpg"));
 
@@ -133,10 +120,7 @@ public class Utility {
 	public Long getCurrentDate() { 
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
 		String dateString = sdf.format(Calendar.getInstance().getTimeInMillis());
-		//System.out.println(dateString);
 		Date date = new Date (dateString);
-		//System.out.println(date);
-		//	System.out.println(date.getTime());
 		return date.getTime()/1000;
 	}
 
